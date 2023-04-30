@@ -1,0 +1,102 @@
+.input-form {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  width: 100%;
+  background-color: var(--lighter-grey);
+  padding: 5px;
+  position: relative;
+}
+
+.text-input {
+  border: none;
+  outline: none;
+  padding: 0px 15px;
+  border-radius: 25px;
+  width: 60%;
+  background-color: var(--background);
+  color: var(--text);
+  font-size: medium;
+}
+
+.input-buttons {
+  border: none;
+  outline: none;
+  background-color: var(--lighter-grey);
+  color: var(--main-blue);
+  margin: 0px 10px;
+  cursor: pointer;
+}
+
+.input-buttons:hover {
+  color: var(--main-blue-dark);
+  transition-delay: 40ms;
+}
+
+.input-buttons span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8em;
+}
+
+/* .emoji-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.emoji-picker-container {
+  position: absolute;
+  left: 50px;
+  bottom: 52px;
+}
+
+.EmojiPickerReact {
+  --epr-bg-color: var(--light-grey) !important;
+  --epr-category-label-bg-color: var(--lighter-grey) !important;
+  --epr-hover-bg-color: var(--lighter-grey) !important;
+  --epr-focus-bg-color: var(--lighter-grey) !important;
+  --epr-picker-border-color: var(--lighter-grey) !important;
+  --epr-picker-border-radius: 13px !important;
+  --epr-search-input-border-radius: 13px !important;
+  --epr-search-input-bg-color: var(--lighter-grey) !important;
+  --epr-highlight-color: var(--main-blue) !important;
+  --epr-category-icon-active-color: var(--main-blue) !important;
+  /* --epr-text-color: var(--text); */
+}
+
+.EmojiPickerReact * {
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+}
+
+.epr-body::-webkit-scrollbar {
+  width: 5px;
+}
+.epr-body::-webkit-scrollbar-track {
+  background: var(--lighter-grey);
+}
+.epr-body::-webkit-scrollbar-thumb {
+  background: var(--main-blue);
+}
+.epr-body::-webkit-scrollbar-thumb:hover {
+  background: var(--main-blue-dark);
+}
+
+@media (max-width: 961px) {
+  .text-input {
+    flex: 1;
+  }
+  .emoji-picker-container {
+    left: auto;
+    width: 95%;
+  }
+}
+
+@media (pointer: none), (pointer: coarse) and (max-width: 961px) {
+  .input-form {
+    position: sticky;
+    bottom: 0px;
+  }
+}

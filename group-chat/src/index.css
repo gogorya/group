@@ -1,0 +1,51 @@
+* {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+    "Helvetica", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  box-sizing: border-box;
+}
+
+.light-theme {
+  --lighter-grey: #e8e8e8;
+  --light-grey: #dbdbdb;
+  --main-blue: #2985e6;
+  --main-blue-dark: #1e60a6;
+  --text: #000000;
+  --background: #ffffff;
+  /* background-color: #DBDBDB; */
+}
+
+.dark-theme {
+  --lighter-grey: #242424;
+  --light-grey: #171717;
+  --main-blue: #2985e6;
+  --main-blue-dark: #103359;
+  --text: #ffffff;
+  --background: #000000;
+  /* background-color: #171717; */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--light-grey);
+}
+
+@media (max-width: 961px) {
+  body {
+    background-color: var(--background);
+    /* height: calc(var(--foo, 1vh)); */
+    /* height: calc(var(--vh, 1vh)); */
+  }
+}
+
+/* (pointer:none), (pointer: coarse) and */
