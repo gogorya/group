@@ -15,6 +15,7 @@ export default function ChatScreen() {
 
   const [messages, setMessages] = useState([]);
   const [chatText, setChatText] = useState("");
+  const [selectedGif, setSelectedGif] = useState("");
   const [arrivalmessage, setArrivalMessage] = useState({});
 
   const currUser = localStorage.getItem("username");
@@ -22,6 +23,7 @@ export default function ChatScreen() {
   const handleInputSubmit = (e) => {
     e.preventDefault();
     setChatText("");
+    setSelectedGif("");
 
     Authentication().then((data) => {
       if (!data.isLog) {
@@ -40,19 +42,22 @@ export default function ChatScreen() {
       username: currUser,
       message: chatText,
       time: new Date().toISOString(),
+      gif: selectedGif,
     };
     modifyTime(hold);
     const msg = [...messages];
     msg.push(hold);
     setMessages(msg);
+    // can be changed to setMessages((prev) => [...prev, hold])
 
-    postUserInfo(postMessage, { chatText }).then((data) => {
+    postUserInfo(postMessage, { chatText, selectedGif }).then((data) => {
       // console.log(data);
     });
 
     socket.emit("sendMessage", {
       username: currUser,
       message: chatText,
+      gif: selectedGif,
     });
   };
 
@@ -158,13 +163,21 @@ export default function ChatScreen() {
               key={uuidv4()}
             >
               {arr[ind - 1] !== undefined &&
-              (arr[ind].username === arr[ind - 1].username ||
-                arr[ind].username === currUser) ? null : (
-                <div className="user-detail">
-                  <span>{arr[ind].username}</span>
-                </div>
-              )}
+                (arr[ind].username === arr[ind - 1].username ||
+                arr[ind].username === currUser ? null : (
+                  <div className="user-detail">
+                    <span>{arr[ind].username}</span>
+                  </div>
+                ))}
               <div className="message">
+                {arr[ind].gif === "" ? null : (
+                  <img
+                    loading="lazy"
+                    className="message-gif"
+                    src={arr[ind].gif}
+                    alt=""
+                  />
+                )}
                 <span>{arr[ind].message}</span>
                 <span className="time-detail">{arr[ind].time}</span>
               </div>
@@ -176,6 +189,8 @@ export default function ChatScreen() {
         handleInputSubmit={handleInputSubmit}
         chatText={chatText}
         setChatText={setChatText}
+        selectedGif={selectedGif}
+        setSelectedGif={setSelectedGif}
       />
     </div>
   );

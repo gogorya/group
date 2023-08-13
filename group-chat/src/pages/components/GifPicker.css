@@ -1,0 +1,73 @@
+.gif-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.gif-nav {
+  padding: 10px;
+  background-color: var(--light-grey);
+}
+
+.preview-gif {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light-grey);
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-gif button {
+  border-radius: 2px;
+  margin: 5px;
+  padding: 5px;
+}
+
+.gif-box input {
+  border: none;
+  outline: none;
+  padding: 8px;
+  border-radius: 25px;
+  width: 100%;
+  background-color: var(--lighter-grey);
+  color: var(--text);
+  font-size: 1em;
+}
+
+.gifs {
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+
+  overflow-y: scroll;
+}
+
+.gif {
+  display: flex;
+  background-color: var(--light-grey);
+  margin: 2px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.img-shadow-div {
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.img-shadow-div img {
+  flex-grow: 1;
+  flex-shrink: 0;
+}

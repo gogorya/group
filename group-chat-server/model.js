@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: /^[a-z]{1,25}$/,
+    match: /^[A-Z]{1,1}[A-za-z]{1,25}$/,
   },
   password: {
     type: String,
@@ -29,6 +29,9 @@ const messageSchema = new mongoose.Schema(
     message: {
       type: String,
       required: true,
+    },
+    gif: {
+      type: String,
     },
   },
   {

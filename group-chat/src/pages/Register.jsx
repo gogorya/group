@@ -17,6 +17,7 @@ export default function Landing() {
   const [regStatus, setRegStatus] = useState("");
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     const data = {
       username: userDetails.username,
       password: userDetails.password,
@@ -53,7 +54,7 @@ export default function Landing() {
 
   return (
     <Block>
-      <div className="log-reg">
+      <form className="log-reg">
         <div className="upper-section">
           <p className="logo">Group</p>
           <hr />
@@ -99,7 +100,7 @@ export default function Landing() {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </Block>
   );
 }

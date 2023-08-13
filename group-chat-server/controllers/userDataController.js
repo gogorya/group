@@ -30,11 +30,11 @@ const userRegister = async (req, res) => {
           .status(200)
           .send({ regStat: "Username already registered.", isLog: false });
       } else {
-        const usernameReg = /^[a-z]{1,25}$/;
+        const usernameReg = /^[A-Z]{1,1}[A-za-z]{1,25}$/;
         if (!usernameReg.test(data.username)) {
           res.status(200).send({
             regStat:
-              "Username should be lowercase alphabets with atmost 25 characters.",
+              "First character should be uppercase with atmost 25 characters.",
             isLog: false,
           });
         } else {

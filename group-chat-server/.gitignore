@@ -3,6 +3,7 @@
 
 # production
 /build
+/DB_backup
 
 # misc
 .env

@@ -5,10 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production node index.js",
-    "start_local": "NODE_ENV=development nodemon index.js",
-    "build": "NODE_ENV=production node index.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
+    "start": "NODE_ENV=development nodemon index.js",
+    "build": "NODE_ENV=production node index.js"
   },
   "author": "Nimit Gogorya",
   "license": "ISC",

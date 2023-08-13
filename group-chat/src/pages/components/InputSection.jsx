@@ -1,47 +1,118 @@
-import { React, useState } from "react";
+import { React, useEffect, useState, useRef } from "react";
 import { IoSendSharp } from "react-icons/io5";
-import { BsEmojiLaughingFill } from "react-icons/bs";
-import EmojiPicker from "emoji-picker-react";
+import { HiOutlineGif } from "react-icons/hi2";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 
+import GifPicker from "./GifPicker";
+import EmojiPicker from "./EmojiPicker";
 import "./InputSection.css";
 
 export default function InputSection({
   handleInputSubmit,
   chatText,
   setChatText,
+  selectedGif,
+  setSelectedGif,
 }) {
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const input = useRef();
+  const [EmojiGif, setEmojiGif] = useState(true);
+  const [showEmojiPickerContainer, setShowEmojiPickerContainer] =
+    useState(false);
 
   const handleTextChange = (e) => {
     setChatText(e.target.value);
   };
 
-  const toggleEmojiPicker = () => {
-    setShowEmojiPicker(!showEmojiPicker);
+  const toggleEmojiPicker = (val) => {
+    setShowEmojiPickerContainer(val);
   };
 
-  const handleEmojiClick = (emoji, event) => {
-    setChatText(String(chatText + emoji.emoji));
+  const toggleTray = (val) => {
+    setEmojiGif(val);
   };
+
+  const handleEmojiClick = (emoji) => {
+    setChatText(String(chatText + emoji));
+    input.current.focus();
+  };
+
+  const handleGifClick = (gif) => {
+    selectedGif === gif ? setSelectedGif("") : setSelectedGif(gif);
+    input.current.focus();
+  };
+
+  const onFormSubmit = (e) => {
+    input.current.focus();
+    toggleEmojiPicker(false);
+    handleInputSubmit(e);
+  };
+
+  useEffect(() => {
+    input.current.focus();
+  }, []);
 
   return (
-    <form className="input-form" onSubmit={(e) => handleInputSubmit(e)}>
-      <div className="emoji-picker-container">
-        {showEmojiPicker && (
-          <EmojiPicker
-            onEmojiClick={handleEmojiClick}
-            previewConfig={{
-              showPreview: false,
+    <form className="input-form" onSubmit={(e) => onFormSubmit(e)}>
+      <div
+        className={`${
+          showEmojiPickerContainer ? "emoji-gif-container" : "hidden"
+        }`}
+      >
+        <div className="emoji-gif-content">
+          <div
+            className={`${EmojiGif ? null : "hidden"}`}
+            style={{ height: "100%" }}
+          >
+            <EmojiPicker
+              onEmojiClick={handleEmojiClick}
+              showEmojiPickerContainer={showEmojiPickerContainer}
+              EmojiGif={EmojiGif}
+            />
+          </div>
+
+          {!EmojiGif && showEmojiPickerContainer && (
+            <GifPicker
+              onGifClick={handleGifClick}
+              selectedGif={selectedGif}
+              setSelectedGif={setSelectedGif}
+            />
+          )}
+        </div>
+        <div className="emoji-gif-selector-tray">
+          <button
+            className="input-buttons"
+            type="button"
+            onClick={() => {
+              toggleTray(true);
             }}
-            autoFocusSearch={false}
-            height={window.screen.width <= 961 ? "300px" : "450px"}
-            width={window.screen.width <= 961 ? "100%" : "350px"}
-          />
-        )}
+          >
+            <span>
+              <MdOutlineEmojiEmotions />
+            </span>
+          </button>
+          <button
+            className="input-buttons"
+            type="button"
+            onClick={() => {
+              toggleTray(false);
+            }}
+          >
+            <span>
+              <HiOutlineGif />
+            </span>
+          </button>
+        </div>
       </div>
-      <button className="input-buttons" type="button">
+
+      <button
+        className="input-buttons"
+        type="button"
+        onClick={() => {
+          toggleEmojiPicker(!showEmojiPickerContainer);
+        }}
+      >
         <span>
-          <BsEmojiLaughingFill onClick={toggleEmojiPicker} />
+          <MdOutlineEmojiEmotions />
         </span>
       </button>
 
@@ -50,8 +121,12 @@ export default function InputSection({
         placeholder="Type a message"
         onChange={handleTextChange}
         value={chatText}
+        ref={input}
       />
-      <button className="input-buttons" disabled={chatText === ""}>
+      <button
+        className="input-buttons"
+        disabled={chatText === "" && selectedGif === ""}
+      >
         <span>
           <IoSendSharp />
         </span>

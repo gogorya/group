@@ -10,6 +10,7 @@ const postMessage = async (req, res) => {
     const msg = new messageModel({
       username: req.session.username,
       message: data.chatText,
+      gif: data.selectedGif,
     });
     msg
       .save()
@@ -29,12 +30,13 @@ const postMessage = async (req, res) => {
 const getMessage = async (req, res) => {
   if (req.session.username) {
     const data = [];
-    const foo = await messageModel.find({}, "username message createdAt");
+    const foo = await messageModel.find({}, "username message gif createdAt");
     foo.map((it) => {
       data.push({
         username: it.username,
         message: it.message,
         time: it.createdAt,
+        gif: it.gif,
       });
     });
     // console.log(data);

@@ -16,7 +16,7 @@
   width: 60%;
   background-color: var(--background);
   color: var(--text);
-  font-size: medium;
+  font-size: 1em;
 }
 
 .input-buttons {
@@ -24,7 +24,7 @@
   outline: none;
   background-color: var(--lighter-grey);
   color: var(--main-blue);
-  margin: 0px 10px;
+  padding: 0px 10px;
   cursor: pointer;
 }
 
@@ -40,55 +40,49 @@
   font-size: 1.8em;
 }
 
-/* .emoji-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
-.emoji-picker-container {
+.emoji-gif-container {
+  color: var(--text);
+  background-color: var(--lighter-grey);
   position: absolute;
+  height: 400px;
+  width: 75%;
   left: 50px;
   bottom: 52px;
+  display: flex;
+  flex-direction: column;
 }
 
-.EmojiPickerReact {
-  --epr-bg-color: var(--light-grey) !important;
-  --epr-category-label-bg-color: var(--lighter-grey) !important;
-  --epr-hover-bg-color: var(--lighter-grey) !important;
-  --epr-focus-bg-color: var(--lighter-grey) !important;
-  --epr-picker-border-color: var(--lighter-grey) !important;
-  --epr-picker-border-radius: 13px !important;
-  --epr-search-input-border-radius: 13px !important;
-  --epr-search-input-bg-color: var(--lighter-grey) !important;
-  --epr-highlight-color: var(--main-blue) !important;
-  --epr-category-icon-active-color: var(--main-blue) !important;
-  /* --epr-text-color: var(--text); */
+.emoji-gif-content {
+  height: 90%;
 }
 
-.EmojiPickerReact * {
-  box-sizing: border-box !important;
-  font-family: inherit !important;
+.emoji-gif-selector-tray {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 10%;
 }
 
-.epr-body::-webkit-scrollbar {
-  width: 5px;
+.emoji-gif-selector-tray button {
+  flex-grow: 1;
+  height: 100%;
 }
-.epr-body::-webkit-scrollbar-track {
-  background: var(--lighter-grey);
+
+.hidden {
+  display: none;
 }
-.epr-body::-webkit-scrollbar-thumb {
-  background: var(--main-blue);
-}
-.epr-body::-webkit-scrollbar-thumb:hover {
-  background: var(--main-blue-dark);
+
+.preview-gif img {
+  border: 2px solid var(--main-blue);
+  margin-bottom: 5px;
+  max-height: 270px;
 }
 
 @media (max-width: 961px) {
   .text-input {
     flex: 1;
   }
-  .emoji-picker-container {
+  .emoji-gif-container {
     left: auto;
     width: 95%;
   }
