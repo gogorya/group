@@ -20,8 +20,9 @@ app.use(
       // enable secure property while deploying to live env
       // secure: true,
       sameSite: true,
-      maxAge: 7200000,
+      maxAge: 86400000,
     },
+    rolling: true,
     store: store.create({
       mongoUrl: process.env.DATABASE_URL,
       crypto: {
@@ -39,7 +40,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "build", "index.html"));
   });
 } else {
-  console.log("!", process.env.NODE_ENV);
+  console.log("Env: ", process.env.NODE_ENV);
   app.use(
     cors({
       // origin: "http://localhost:3000",
@@ -65,11 +66,7 @@ const server = app.listen(process.env.PORT || 8080, (error) => {
 
 const db = mongoose.connection;
 try {
-  mongoose.connect(
-    process.env.NODE_ENV === "production"
-      ? process.env.DATABASE_URL_PROD
-      : process.env.DATABASE_URL
-  );
+  mongoose.connect(process.env.DATABASE_URL);
   db.once("connected", () => {
     console.log("Database connected");
   });
@@ -79,7 +76,8 @@ try {
 db.on("error", (error) => {
   console.log("Db error: ", error);
 });
-// shift this to messageDataController?
+
+// shift this to messageDataController? - didn't work
 const io = new Server(
   server,
   process.env.NODE_ENV === "production"

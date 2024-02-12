@@ -63,7 +63,7 @@ const userRegister = async (req, res) => {
               .catch((error) => {
                 console.log(error);
                 res
-                  .status(400)
+                  .status(500)
                   .send({ regStat: "User register failed", isLog: false });
               });
           }

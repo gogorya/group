@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { socket } from "../../socket";
 import InputSection from "./InputSection";
-import { postUserInfo, Authentication, handleLogout } from "../../Auth";
+import { postUserInfo, Authentication, handleLogout } from "../../auth";
 import { getMessage } from "../apiRoutes";
 import { postMessage } from "../apiRoutes";
 import "./ChatScreen.css";
@@ -20,23 +20,23 @@ export default function ChatScreen() {
 
   const currUser = localStorage.getItem("username");
 
-  const handleInputSubmit = (e) => {
-    e.preventDefault();
-    setChatText("");
-    setSelectedGif("");
-
+  useEffect(() => {
     Authentication().then((data) => {
       if (!data.isLog) {
-        handleLogout()
-          .then((foo) => {})
-          .catch((error) => {
-            console.log(error);
-          });
+        handleLogout().catch((error) => {
+          console.log(error);
+        });
         navigate("/login");
       } else {
         localStorage.setItem("username", data.username);
       }
     });
+  }, [messages, selectedGif, arrivalmessage, navigate]);
+
+  const handleInputSubmit = (e) => {
+    e.preventDefault();
+    setChatText("");
+    setSelectedGif("");
 
     const hold = {
       username: currUser,
@@ -47,8 +47,7 @@ export default function ChatScreen() {
     modifyTime(hold);
     const msg = [...messages];
     msg.push(hold);
-    setMessages(msg);
-    // can be changed to setMessages((prev) => [...prev, hold])
+    setMessages((prev) => [...prev, hold]);
 
     postUserInfo(postMessage, { chatText, selectedGif }).then((data) => {
       // console.log(data);

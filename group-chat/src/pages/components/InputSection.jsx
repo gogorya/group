@@ -53,6 +53,35 @@ export default function InputSection({
 
   return (
     <form className="input-form" onSubmit={(e) => onFormSubmit(e)}>
+      <div className="input-div">
+        <button
+          className="input-buttons"
+          type="button"
+          onClick={() => {
+            toggleEmojiPicker(!showEmojiPickerContainer);
+          }}
+        >
+          <span>
+            <MdOutlineEmojiEmotions />
+          </span>
+        </button>
+
+        <input
+          className="text-input"
+          placeholder="Type a message"
+          onChange={handleTextChange}
+          value={chatText}
+          ref={input}
+        />
+        <button
+          className="input-buttons"
+          disabled={chatText === "" && selectedGif === ""}
+        >
+          <span>
+            <IoSendSharp />
+          </span>
+        </button>
+      </div>
       <div
         className={`${
           showEmojiPickerContainer ? "emoji-gif-container" : "hidden"
@@ -103,34 +132,6 @@ export default function InputSection({
           </button>
         </div>
       </div>
-
-      <button
-        className="input-buttons"
-        type="button"
-        onClick={() => {
-          toggleEmojiPicker(!showEmojiPickerContainer);
-        }}
-      >
-        <span>
-          <MdOutlineEmojiEmotions />
-        </span>
-      </button>
-
-      <input
-        className="text-input"
-        placeholder="Type a message"
-        onChange={handleTextChange}
-        value={chatText}
-        ref={input}
-      />
-      <button
-        className="input-buttons"
-        disabled={chatText === "" && selectedGif === ""}
-      >
-        <span>
-          <IoSendSharp />
-        </span>
-      </button>
     </form>
   );
 }

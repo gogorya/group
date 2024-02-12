@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import { registerRoute } from "./apiRoutes";
 import Block from "./components/Block";
-import { postUserInfo } from "../Auth";
+import { postUserInfo } from "../auth";
 
 export default function Landing() {
   const navigate = useNavigate();

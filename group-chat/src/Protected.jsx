@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Block from "./pages/components/Block";
-import { Authentication } from "./Auth";
+import { Authentication } from "./auth";
 
 export default function Auth({ children }) {
   const navigate = useNavigate();
@@ -21,7 +21,9 @@ export default function Auth({ children }) {
     children
   ) : (
     <Block>
-      <h2 style={{ color: "var(--main-blue-dark)" }}>Please wait...</h2>
+      <h2 style={{ color: "var(--main-blue)", marginTop: "200px" }}>
+        Please wait...
+      </h2>
     </Block>
   );
 }

@@ -12,6 +12,7 @@ const {
 const {
   postMessage,
   getMessage,
+  checkAuthh,
 } = require("../controllers/messageDataController");
 
 router.post("/userLogin", userLogin);
@@ -19,6 +20,7 @@ router.post("/userRegister", userRegister);
 router.post("/checkAuth", checkAuth);
 router.post("/logout", logout);
 
+router.use(checkAuthh);
 router.post("/postMessage", postMessage);
 router.post("/getMessage", getMessage);
 

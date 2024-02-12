@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 
-import { MdOutlineClose } from "react-icons/md";
+// import { MdOutlineClose } from "react-icons/md";
 import "./GifPicker.css";
 
 export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
@@ -215,11 +215,11 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
           }}
         >
           <img src={selectedGif} alt=""></img>
-          <button className="input-buttons" type="button">
+          {/* <button className="input-buttons" type="button">
             <span>
               <MdOutlineClose />
             </span>
-          </button>
+          </button> */}
         </div>
       )}
       <div className="gif-nav">

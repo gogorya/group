@@ -1,10 +1,11 @@
 import { React, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Chat from "./pages/Chat";
 import Protected from "./Protected";
+import Block from "./pages/components/Block";
 
 export default function App() {
   const [isDark, setIsDark] = useState(
@@ -38,6 +39,19 @@ export default function App() {
             <Protected>
               <Chat isDark={isDark} setIsDark={setIsDark} />
             </Protected>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Block>
+              <h2 style={{ color: "var(--main-blue)", marginTop: "200px" }}>
+                Error 404: Not Found
+              </h2>
+              <Link className="link-tag" to={"/login"}>
+                Go back
+              </Link>
+            </Block>
           }
         />
       </Routes>

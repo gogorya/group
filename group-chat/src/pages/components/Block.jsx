@@ -1,7 +1,7 @@
 import { useEffect, React } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Authentication } from "../../Auth";
+import { Authentication } from "../../auth";
 import "./Block.css";
 
 export default function Block({ children }) {

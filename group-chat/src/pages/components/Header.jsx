@@ -2,7 +2,7 @@ import { React } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 
-import { handleLogout } from "../../Auth";
+import { handleLogout } from "../../auth";
 import "./Header.css";
 
 export default function Header({ isDark, setIsDark }) {
