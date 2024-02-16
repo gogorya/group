@@ -1,7 +1,10 @@
 import { React, useEffect, useState, useRef } from "react";
 import { IoSendSharp } from "react-icons/io5";
-import { HiOutlineGif } from "react-icons/hi2";
-import { MdOutlineEmojiEmotions } from "react-icons/md";
+import {
+  MdOutlineEmojiEmotions,
+  MdOutlineArrowDownward,
+  MdOutlineClose,
+} from "react-icons/md";
 
 import GifPicker from "./GifPicker";
 import EmojiPicker from "./EmojiPicker";
@@ -15,9 +18,15 @@ export default function InputSection({
   setSelectedGif,
 }) {
   const input = useRef();
-  const [EmojiGif, setEmojiGif] = useState(true);
+  const [emojiGif, setEmojiGif] = useState(true);
   const [showEmojiPickerContainer, setShowEmojiPickerContainer] =
     useState(false);
+
+  useEffect(() => {
+    input.current.addEventListener("focus", (event) => {
+      toggleEmojiPicker(false);
+    });
+  }, []);
 
   const handleTextChange = (e) => {
     setChatText(e.target.value);
@@ -27,17 +36,17 @@ export default function InputSection({
     setShowEmojiPickerContainer(val);
   };
 
-  const toggleTray = (val) => {
-    setEmojiGif(val);
+  const toggleTray = () => {
+    setEmojiGif(!emojiGif);
   };
 
   const handleEmojiClick = (emoji) => {
     setChatText(String(chatText + emoji));
-    input.current.focus();
   };
 
   const handleGifClick = (gif) => {
-    selectedGif === gif ? setSelectedGif("") : setSelectedGif(gif);
+    setSelectedGif(gif);
+    toggleEmojiPicker(false);
     input.current.focus();
   };
 
@@ -62,7 +71,11 @@ export default function InputSection({
           }}
         >
           <span>
-            <MdOutlineEmojiEmotions />
+            {showEmojiPickerContainer ? (
+              <MdOutlineArrowDownward />
+            ) : (
+              <MdOutlineEmojiEmotions />
+            )}
           </span>
         </button>
 
@@ -89,48 +102,41 @@ export default function InputSection({
       >
         <div className="emoji-gif-content">
           <div
-            className={`${EmojiGif ? null : "hidden"}`}
+            className={`${emojiGif ? null : "hidden"}`}
             style={{ height: "100%" }}
           >
             <EmojiPicker
               onEmojiClick={handleEmojiClick}
               showEmojiPickerContainer={showEmojiPickerContainer}
-              EmojiGif={EmojiGif}
+              emojiGif={emojiGif}
+              toggleTray={toggleTray}
             />
           </div>
-
-          {!EmojiGif && showEmojiPickerContainer && (
+          {!emojiGif && showEmojiPickerContainer && (
             <GifPicker
               onGifClick={handleGifClick}
-              selectedGif={selectedGif}
-              setSelectedGif={setSelectedGif}
+              emojiGif={emojiGif}
+              toggleTray={toggleTray}
             />
           )}
         </div>
-        <div className="emoji-gif-selector-tray">
-          <button
-            className="input-buttons"
-            type="button"
+      </div>
+      <div>
+        {selectedGif !== "" && (
+          <div
+            className="preview-gif"
             onClick={() => {
-              toggleTray(true);
+              setSelectedGif("");
             }}
           >
-            <span>
-              <MdOutlineEmojiEmotions />
-            </span>
-          </button>
-          <button
-            className="input-buttons"
-            type="button"
-            onClick={() => {
-              toggleTray(false);
-            }}
-          >
-            <span>
-              <HiOutlineGif />
-            </span>
-          </button>
-        </div>
+            <img src={selectedGif} alt=""></img>
+            <button className="input-buttons" type="button">
+              <span>
+                <MdOutlineClose />
+              </span>
+            </button>
+          </div>
+        )}
       </div>
     </form>
   );

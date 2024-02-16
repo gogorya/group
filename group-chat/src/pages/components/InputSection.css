@@ -56,29 +56,28 @@
 }
 
 .emoji-gif-content {
-  height: 90%;
-}
-
-.emoji-gif-selector-tray {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 10%;
-}
-
-.emoji-gif-selector-tray button {
-  flex-grow: 1;
   height: 100%;
 }
 
-.hidden {
-  display: none;
+.preview-gif {
+  position: absolute;
+  bottom: 50px;
+  left: 10%;
+  display: flex;
+  padding: 5px;
+  background-color: var(--light-grey);
+  justify-content: space-around;
+  align-items: center;
 }
 
 .preview-gif img {
-  border: 2px solid var(--main-blue);
-  /* margin-bottom: 5px; */
-  max-height: 270px;
+  max-height: 200px;
+  max-width: 300px;
+}
+
+.preview-gif button {
+  border-radius: 25px;
+  padding: 5px;
 }
 
 @media (max-width: 961px) {
@@ -93,11 +92,17 @@
 
 @media (pointer: none), (pointer: coarse) and (max-width: 961px) {
   .input-form {
-    position: sticky;
+    /* position: sticky; */
   }
 
   .emoji-gif-container {
     bottom: 0px;
     position: relative;
+    height: 500px;
+  }
+
+  .preview-gif {
+    left: 0%;
+    width: 100%;
   }
 }

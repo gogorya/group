@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-
-// import { MdOutlineClose } from "react-icons/md";
+import { HiOutlineGif } from "react-icons/hi2";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 import "./GifPicker.css";
 
-export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
-  const tinyGif = useRef(new Map());
-  const searchTinyGif = useRef(new Map());
+export default function GifPicker({ onGifClick, emojiGif, toggleTray }) {
+  const mediumGif = useRef(new Map());
+  const searchMediumGif = useRef(new Map());
 
   const next = useRef("");
   const searchNext = useRef("");
@@ -21,18 +21,18 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
   };
 
   const handleGifClick = (e) => {
-    onGifClick(tinyGif.current.get(e.target.src));
+    onGifClick(mediumGif.current.get(e.target.src));
   };
 
   const searchHandleGifClick = (e) => {
-    onGifClick(searchTinyGif.current.get(e.target.src));
+    onGifClick(searchMediumGif.current.get(e.target.src));
   };
 
   const fetchGifs = () => {
     var apikey = "AIzaSyAEAw4HtOwdgX2ytsEDnfaj_WlJS0sksd0";
     var clientkey = "my_test_app";
     var lmt = 30;
-    var media = "nanogif, tinygif";
+    var media = "nanogif, mediumgif";
     var featured_url =
       "https://tenor.googleapis.com/v2/featured?key=" +
       apikey +
@@ -63,9 +63,9 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
           url = top_10_gifs[i]["media_formats"]["nanogif"]["url"];
           dim = top_10_gifs[i]["media_formats"]["nanogif"]["dims"];
           urls.push({ url, dim });
-          tinyGif.current.set(
+          mediumGif.current.set(
             top_10_gifs[i]["media_formats"]["nanogif"]["url"],
-            top_10_gifs[i]["media_formats"]["tinygif"]["url"]
+            top_10_gifs[i]["media_formats"]["mediumgif"]["url"]
           );
         }
 
@@ -82,7 +82,7 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
     var apikey = "AIzaSyAEAw4HtOwdgX2ytsEDnfaj_WlJS0sksd0";
     var clientkey = "my_test_app";
     var lmt = 30;
-    var media = "nanogif, tinygif";
+    var media = "nanogif, mediumgif";
     var search_url =
       "https://tenor.googleapis.com/v2/search?q=" +
       searchGifText.current +
@@ -115,9 +115,9 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
           url = top_10_gifs[i]["media_formats"]["nanogif"]["url"];
           dim = top_10_gifs[i]["media_formats"]["nanogif"]["dims"];
           urls.push({ url, dim });
-          searchTinyGif.current.set(
+          searchMediumGif.current.set(
             top_10_gifs[i]["media_formats"]["nanogif"]["url"],
-            top_10_gifs[i]["media_formats"]["tinygif"]["url"]
+            top_10_gifs[i]["media_formats"]["mediumgif"]["url"]
           );
         }
         next_value = response_objects["next"];
@@ -164,7 +164,7 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
       clearTimeout(timer);
       timer = setTimeout(() => {
         setSearchGifs([]);
-        searchTinyGif.current.clear();
+        searchMediumGif.current.clear();
         if (e.target.value !== "") {
           searchFetchGifs();
           console.log(e.target.value);
@@ -207,27 +207,23 @@ export default function GifPicker({ onGifClick, selectedGif, setSelectedGif }) {
 
   return (
     <div className="gif-box">
-      {selectedGif !== "" && (
-        <div
-          className="preview-gif"
-          onClick={() => {
-            setSelectedGif("");
-          }}
-        >
-          <img src={selectedGif} alt=""></img>
-          {/* <button className="input-buttons" type="button">
-            <span>
-              <MdOutlineClose />
-            </span>
-          </button> */}
-        </div>
-      )}
       <div className="gif-nav">
         <input
           placeholder="Search Tenor"
           onChange={handleSearchGifTextState}
           id="tenorInput"
         />
+        <button
+          className="input-buttons"
+          type="button"
+          onClick={() => {
+            toggleTray();
+          }}
+        >
+          <span>
+            {emojiGif ? <HiOutlineGif /> : <MdOutlineEmojiEmotions />}
+          </span>
+        </button>
       </div>
       <div className="gifs">
         {searchGifText.current.length === 0 ? (

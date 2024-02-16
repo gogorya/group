@@ -6,27 +6,14 @@
 }
 
 .gif-nav {
+  display: flex;
   padding: 10px;
   background-color: var(--light-grey);
 }
 
-.preview-gif {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+.gif-nav button {
+  flex-grow: 1;
   background-color: var(--light-grey);
-  justify-content: center;
-  align-items: center;
-}
-
-.preview-gif button {
-  border-radius: 2px;
-  margin: 5px;
-  padding: 5px;
 }
 
 .gif-box input {
@@ -34,17 +21,17 @@
   outline: none;
   padding: 8px;
   border-radius: 25px;
-  width: 100%;
+  width: 70%;
   background-color: var(--lighter-grey);
   color: var(--text);
   font-size: 1em;
+  margin: 0 4%;
 }
 
 .gifs {
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
-
   overflow-y: scroll;
 }
 

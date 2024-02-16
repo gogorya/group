@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { /*useCallback,*/ useEffect, useRef, useState } from "react";
 import { IoMdTime } from "react-icons/io";
+import { HiOutlineGif } from "react-icons/hi2";
 
 import {
   MdOutlineEmojiEmotions,
@@ -19,14 +19,15 @@ import "./EmojiPicker.css";
 export default function EmojiPicker({
   onEmojiClick,
   showEmojiPickerContainer,
-  EmojiGif,
+  emojiGif,
+  toggleTray,
 }) {
   const searchInput = useRef(0);
   const recents = useRef([]);
   const refs = useRef([]);
-  const emojiScrollTimer = useRef(undefined);
-  const scrollUp = useRef(true);
-  const prevScrollPos = useRef(-1);
+  // const emojiScrollTimer = useRef(undefined);
+  // const scrollUp = useRef(true);
+  // const prevScrollPos = useRef(-1);
   const emojiScrollBox = useRef(0);
   for (let i = 0; i < 9; i++) {
     refs.current[i] = React.createRef(0);
@@ -34,7 +35,7 @@ export default function EmojiPicker({
 
   const [searching, setSearching] = useState(false);
   const [searchObjects, setSearchObjects] = useState([]);
-  const [stickyNav, setStickyNav] = useState(true);
+  // const [stickyNav, setStickyNav] = useState(true);
 
   const categoryMapping = new Map([
     ["Recents", 0],
@@ -56,10 +57,10 @@ export default function EmojiPicker({
     setSearching(false);
     refs.current[0].current?.scrollIntoView();
     searchInput.current.value = "";
-    setStickyNav(true);
-    scrollUp.current = true;
+    // setStickyNav(true);
+    // scrollUp.current = true;
     setSearchObjects([]);
-  }, [showEmojiPickerContainer, EmojiGif]);
+  }, [showEmojiPickerContainer, emojiGif]);
 
   const handleCategoryClick = (n) => {
     setSearching(false);
@@ -101,57 +102,68 @@ export default function EmojiPicker({
     }
   };
 
-  const throttle = useCallback((callback, wait) => {
-    if (emojiScrollTimer.current) {
-      return;
-    }
-    emojiScrollTimer.current = setTimeout(() => {
-      callback();
-      emojiScrollTimer.current = undefined;
-    }, wait);
-  }, []);
+  // const throttle = useCallback((callback, wait) => {
+  //   if (emojiScrollTimer.current) {
+  //     return;
+  //   }
+  //   emojiScrollTimer.current = setTimeout(() => {
+  //     callback();
+  //     emojiScrollTimer.current = undefined;
+  //   }, wait);
+  // }, []);
 
-  const toggleScroll = (val) => {
-    if (scrollUp.current !== val) {
-      setStickyNav(val);
-      scrollUp.current = val;
-    }
-  };
+  // const toggleScroll = (val) => {
+  //   if (scrollUp.current !== val) {
+  //     setStickyNav(val);
+  //     scrollUp.current = val;
+  //   }
+  // };
 
-  const handleScroll = useCallback(() => {
-    const currScrollPos = emojiScrollBox.current.scrollTop;
-    if (
-      prevScrollPos.current >= 0 &&
-      Math.abs(prevScrollPos.current - currScrollPos) < 50
-    ) {
-      currScrollPos > prevScrollPos.current
-        ? toggleScroll(false)
-        : toggleScroll(true);
-    }
-    prevScrollPos.current = currScrollPos > 0 ? currScrollPos : 0;
-  }, []);
+  // const handleScroll = useCallback(() => {
+  //   const currScrollPos = emojiScrollBox.current.scrollTop;
+  //   if (
+  //     prevScrollPos.current >= 0 &&
+  //     Math.abs(prevScrollPos.current - currScrollPos) < 50
+  //   ) {
+  //     currScrollPos > prevScrollPos.current
+  //       ? toggleScroll(false)
+  //       : toggleScroll(true);
+  //   }
+  //   prevScrollPos.current = currScrollPos > 0 ? currScrollPos : 0;
+  // }, []);
 
-  useEffect(() => {
-    const ele = emojiScrollBox.current;
-    ele.addEventListener("scroll", (e) => {
-      throttle(handleScroll, 50);
-    });
-    return () => {
-      ele.removeEventListener("scroll", () => {});
-    };
-  }, [throttle, handleScroll]);
+  // useEffect(() => {
+  //   const ele = emojiScrollBox.current;
+  //   ele.addEventListener("scroll", (e) => {
+  //     throttle(handleScroll, 50);
+  //   });
+  //   return () => {
+  //     ele.removeEventListener("scroll", () => {});
+  //   };
+  // }, [throttle, handleScroll]);
 
   return (
     <div className="emoji-box">
-      <div className={`emoji-nav ${!stickyNav ? "hidden" : null}`}>
-        <div>
+      <div className="emoji-nav">
+        <div className="emoji-nav-search">
           <input
-            placeholder="Search Emojis"
+            placeholder="Search Emoji"
             onChange={searchEmojis}
             ref={searchInput}
           />
+          <button
+            className="input-buttons"
+            type="button"
+            onClick={() => {
+              toggleTray();
+            }}
+          >
+            <span>
+              {emojiGif ? <HiOutlineGif /> : <MdOutlineEmojiEmotions />}
+            </span>
+          </button>
         </div>
-        <div>
+        <div className="emoji-nav-category">
           {recents.current.length !== 0 && (
             <button
               className="input-buttons"
@@ -250,16 +262,17 @@ export default function EmojiPicker({
 
               {recents.current.map((ele, ind, arr) => {
                 return (
-                  <span
-                    key={uuidv4()}
-                    style={{
-                      backgroundPosition: `${arr[ind]["sheet_x"] * -66 - 1}px ${
-                        arr[ind]["sheet_y"] * -66 - 1
-                      }px`,
-                    }}
-                    onClick={() => handleEmojiClick(arr[ind])}
-                    className="emoji-element"
-                  ></span>
+                  <React.Fragment key={ind}>
+                    <span
+                      style={{
+                        backgroundPosition: `${
+                          arr[ind]["sheet_x"] * -66 - 1
+                        }px ${arr[ind]["sheet_y"] * -66 - 1}px`,
+                      }}
+                      onClick={() => handleEmojiClick(arr[ind])}
+                      className="emoji-element"
+                    ></span>
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -299,15 +312,17 @@ export default function EmojiPicker({
               {searchObjects.length ? (
                 searchObjects.map((ele, ind, arr) => {
                   return (
-                    <span
-                      style={{
-                        backgroundPosition: `${
-                          arr[ind]["sheet_x"] * -66 - 1
-                        }px ${arr[ind]["sheet_y"] * -66 - 1}px`,
-                      }}
-                      onClick={() => handleEmojiClick(arr[ind])}
-                      className="emoji-element"
-                    ></span>
+                    <React.Fragment key={ind}>
+                      <span
+                        style={{
+                          backgroundPosition: `${
+                            arr[ind]["sheet_x"] * -66 - 1
+                          }px ${arr[ind]["sheet_y"] * -66 - 1}px`,
+                        }}
+                        onClick={() => handleEmojiClick(arr[ind])}
+                        className="emoji-element"
+                      ></span>
+                    </React.Fragment>
                   );
                 })
               ) : (
