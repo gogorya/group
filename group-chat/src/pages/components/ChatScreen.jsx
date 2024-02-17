@@ -1,6 +1,5 @@
-import { useRef, useState, useEffect, React } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
 import { socket } from "../../socket";
 import InputSection from "./InputSection";
@@ -42,6 +41,7 @@ export default function ChatScreen() {
       username: currUser,
       message: chatText,
       time: new Date().toISOString(),
+      date: String,
       gif: selectedGif,
     };
     modifyTime(hold);
@@ -62,48 +62,50 @@ export default function ChatScreen() {
 
   const modifyTime = async (obj) => {
     const tt = new Date(obj.time);
-    let dispTime = "";
+    let dispTime = "",
+      dispDate = "";
     switch (tt.getMonth()) {
       case 0:
-        dispTime += "Jan ";
+        dispDate += "Jan ";
         break;
       case 1:
-        dispTime += "Feb ";
+        dispDate += "Feb ";
         break;
       case 2:
-        dispTime += "Mar ";
+        dispDate += "Mar ";
         break;
       case 3:
-        dispTime += "Apr ";
+        dispDate += "Apr ";
         break;
       case 4:
-        dispTime += "May ";
+        dispDate += "May ";
         break;
       case 5:
-        dispTime += "Jun ";
+        dispDate += "Jun ";
         break;
       case 6:
-        dispTime += "Jul ";
+        dispDate += "Jul ";
         break;
       case 7:
-        dispTime += "Aug ";
+        dispDate += "Aug ";
         break;
       case 8:
-        dispTime += "Sep ";
+        dispDate += "Sep ";
         break;
       case 9:
-        dispTime += "Oct ";
+        dispDate += "Oct ";
         break;
       case 10:
-        dispTime += "Nov ";
+        dispDate += "Nov ";
         break;
       case 11:
-        dispTime += "Dec ";
+        dispDate += "Dec ";
         break;
       default:
         break;
     }
-    dispTime += String(tt.getDate()) + " " + String(tt.getFullYear()) + " ";
+    dispDate += String(tt.getDate()) + " " + String(tt.getFullYear()) + " ";
+    obj.date = dispDate;
     dispTime +=
       String(tt.getHours() > 12 ? tt.getHours() - 12 : tt.getHours()) + ":";
     dispTime +=
@@ -146,41 +148,56 @@ export default function ChatScreen() {
 
   return (
     <div className="chat-container">
+      {/* <div className="date-detail date-detail-absolute">
+        <span>Hiii</span>
+      </div> */}
       <div className="chat-message">
         {messages.map((ele, ind, arr) => {
           return (
-            <div
-              ref={scrollRef}
-              className={`message-box${
-                arr[ind].username === currUser ? " out" : " in"
-              }${
-                arr[ind + 1] === undefined ||
-                arr[ind].username !== arr[ind + 1].username
-                  ? " last"
-                  : ""
-              }`}
-              key={uuidv4()}
-            >
+            <React.Fragment key={ind}>
               {arr[ind - 1] !== undefined &&
-                (arr[ind].username === arr[ind - 1].username ||
-                arr[ind].username === currUser ? null : (
+              arr[ind].date === arr[ind - 1].date ? null : (
+                <div className="date-detail">
+                  <span>{arr[ind].date}</span>
+                </div>
+              )}
+              <div
+                ref={scrollRef}
+                className={`message-box${
+                  arr[ind].username === currUser ? " out" : " in"
+                }${
+                  arr[ind + 1] === undefined ||
+                  arr[ind].username !== arr[ind + 1].username ||
+                  arr[ind].time !== arr[ind + 1].time
+                    ? " last"
+                    : ""
+                }`}
+              >
+                {arr[ind].username === currUser ||
+                (arr[ind - 1] !== undefined &&
+                  arr[ind].username === arr[ind - 1].username) ? null : (
                   <div className="user-detail">
                     <span>{arr[ind].username}</span>
                   </div>
-                ))}
-              <div className="message">
-                {arr[ind].gif === "" ? null : (
-                  <img
-                    loading="lazy"
-                    className="message-gif"
-                    src={arr[ind].gif}
-                    alt=""
-                  />
                 )}
-                <span>{arr[ind].message}</span>
-                <span className="time-detail">{arr[ind].time}</span>
+                <div className="message">
+                  {arr[ind].gif === "" ? null : (
+                    <img
+                      loading="lazy"
+                      className="message-gif"
+                      src={arr[ind].gif}
+                      alt=""
+                    />
+                  )}
+                  <span>{arr[ind].message}</span>
+                  {arr[ind + 1] !== undefined &&
+                  arr[ind].username === arr[ind + 1].username &&
+                  arr[ind].time === arr[ind + 1].time ? null : (
+                    <span className="time-detail">{arr[ind].time}</span>
+                  )}
+                </div>
               </div>
-            </div>
+            </React.Fragment>
           );
         })}
       </div>

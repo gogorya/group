@@ -92,6 +92,7 @@
 
 @media (pointer: none), (pointer: coarse) and (max-width: 961px) {
   .input-form {
+    /* bottom: 0px; */
     /* position: sticky; */
   }
 
