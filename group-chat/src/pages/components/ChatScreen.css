@@ -14,11 +14,11 @@
   display: flex;
   flex-direction: column;
   padding: 3px;
-  scrollbar-color: var(--main-blue) var(--background);
+  /* scrollbar-color: var(--main-blue) var(--background); */
   /* overflow-x: hidden; */
 }
 
-.chat-message::-webkit-scrollbar {
+/* .chat-message::-webkit-scrollbar {
   width: 5px;
 }
 .chat-message::-webkit-scrollbar-track {
@@ -29,7 +29,7 @@
 }
 .chat-message::-webkit-scrollbar-thumb:hover {
   background: var(--main-blue-dark);
-}
+} */
 
 .message-box {
   width: fit-content;
@@ -138,7 +138,7 @@
 
 .user-detail {
   top: -18px;
-  left: 17px;
+  left: 18px;
   position: absolute;
   font-size: 0.9em;
   font-weight: 500;

@@ -4,7 +4,7 @@ import { HiOutlineGif } from "react-icons/hi2";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import "./GifPicker.css";
 
-export default function GifPicker({ onGifClick, emojiGif, toggleTray }) {
+export default function GifPicker({ onGifClick, toggleTray }) {
   const mediumGif = useRef(new Map());
   const searchMediumGif = useRef(new Map());
 
@@ -221,7 +221,7 @@ export default function GifPicker({ onGifClick, emojiGif, toggleTray }) {
           }}
         >
           <span>
-            {emojiGif ? <HiOutlineGif /> : <MdOutlineEmojiEmotions />}
+            <MdOutlineEmojiEmotions />
           </span>
         </button>
       </div>

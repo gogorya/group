@@ -4,7 +4,7 @@ const checkAuth = async (req, res) => {
   if (req.session.username) {
     res.status(200).send({ isLog: true, username: req.session.username });
   } else {
-    res.status(200).send({ isLog: false });
+    res.status(403).send({ isLog: false });
   }
 };
 

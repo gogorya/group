@@ -12,21 +12,27 @@
 .light-theme {
   --lighter-grey: #e8e8e8;
   --light-grey: #dbdbdb;
+  --lightest-grey: #f7f7f7;
   --main-blue: #2985e6;
   --main-blue-dark: #1e60a6;
   --text: #000000;
   --background: #ffffff;
-  /* background-color: #DBDBDB; */
+  color-scheme: light;
+  --background-outer: #dbdbdb;
+  --buttons: #2985e6;
 }
 
 .dark-theme {
-  --lighter-grey: #242424;
-  --light-grey: #171717;
+  --lighter-grey: #081a2e;
+  --light-grey: #061321;
+  --lightest-grey: #0b223b;
   --main-blue: #2985e6;
-  --main-blue-dark: #103359;
+  --main-blue-dark: #081a2e;
   --text: #ffffff;
-  --background: #000000;
-  /* background-color: #171717; */
+  --background: #010408;
+  color-scheme: dark;
+  --background-outer: #000000;
+  --buttons: #ffffff;
 }
 
 html,
@@ -38,12 +44,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--light-grey);
+  background-color: var(--background-outer);
 }
 
 @media (max-width: 961px) {
   body {
-    background-color: var(--background);
+    /* background-color: var(--background); */
     /* height: calc(var(--foo, 1vh)); */
     /* height: calc(var(--vh, 1vh)); */
   }

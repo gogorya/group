@@ -16,8 +16,9 @@
   outline: none;
   padding: 0px 15px;
   border-radius: 25px;
-  width: 60%;
-  background-color: var(--background);
+  flex: 1;
+  background-color: var(--lightest-grey);
+  border: 1px solid var(--light-grey);
   color: var(--text);
   font-size: 1em;
 }
@@ -26,31 +27,31 @@
   border: none;
   outline: none;
   background-color: var(--lighter-grey);
-  color: var(--main-blue);
+  color: var(--buttons);
   padding: 0px 10px;
   cursor: pointer;
 }
 
-.input-buttons:hover {
+/* .input-buttons:hover {
   color: var(--main-blue-dark);
   transition-delay: 40ms;
-}
+} */
 
 .input-buttons span {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8em;
+  font-size: 2em;
 }
 
 .emoji-gif-container {
   color: var(--text);
-  background-color: var(--lighter-grey);
+  background-color: var(--lightest-grey);
   position: absolute;
   height: 400px;
   width: 75%;
   left: 50px;
-  bottom: 52px;
+  bottom: 50px;
   display: flex;
   flex-direction: column;
 }
@@ -61,23 +62,27 @@
 
 .preview-gif {
   position: absolute;
-  bottom: 50px;
-  left: 10%;
+  top: -200px;
+  left: 0px;
+  min-width: fit-content;
   display: flex;
-  padding: 5px;
   background-color: var(--light-grey);
   justify-content: space-around;
   align-items: center;
 }
 
-.preview-gif img {
-  max-height: 200px;
-  max-width: 300px;
+.img-shadow {
+  display: flex;
+  height: 200px;
+  width: 300px;
+  overflow: hidden;
+  justify-content: center;
 }
 
 .preview-gif button {
   border-radius: 25px;
   padding: 5px;
+  margin: 5px;
 }
 
 @media (max-width: 961px) {
@@ -103,7 +108,7 @@
   }
 
   .preview-gif {
-    left: 0%;
+    /* left: 0%; */
     width: 100%;
   }
 }

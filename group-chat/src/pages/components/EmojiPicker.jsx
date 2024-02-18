@@ -1,8 +1,7 @@
 import React, { /*useCallback,*/ useEffect, useRef, useState } from "react";
-import { IoMdTime } from "react-icons/io";
-import { HiOutlineGif } from "react-icons/hi2";
-
 import {
+  MdOutlineAccessTime,
+  MdOutlineGifBox,
   MdOutlineEmojiEmotions,
   MdOutlineEmojiNature,
   MdOutlineEmojiFoodBeverage,
@@ -159,7 +158,7 @@ export default function EmojiPicker({
             }}
           >
             <span>
-              {emojiGif ? <HiOutlineGif /> : <MdOutlineEmojiEmotions />}
+              <MdOutlineGifBox />
             </span>
           </button>
         </div>
@@ -171,7 +170,7 @@ export default function EmojiPicker({
               onClick={() => handleCategoryClick(0)}
             >
               <span>
-                <IoMdTime />
+                <MdOutlineAccessTime />
               </span>
             </button>
           )}
@@ -308,27 +307,31 @@ export default function EmojiPicker({
         </div>
         <div>
           {searching && (
-            <div className="emoji-grid search-div">
-              {searchObjects.length ? (
-                searchObjects.map((ele, ind, arr) => {
-                  return (
-                    <React.Fragment key={ind}>
-                      <span
-                        style={{
-                          backgroundPosition: `${
-                            arr[ind]["sheet_x"] * -66 - 1
-                          }px ${arr[ind]["sheet_y"] * -66 - 1}px`,
-                        }}
-                        onClick={() => handleEmojiClick(arr[ind])}
-                        className="emoji-element"
-                      ></span>
-                    </React.Fragment>
-                  );
-                })
-              ) : (
-                <span className="category">Not found</span>
-              )}
-            </div>
+            <>
+              <div className="fill-div">
+                <div className="search-div emoji-grid">
+                  {searchObjects.length ? (
+                    searchObjects.map((ele, ind, arr) => {
+                      return (
+                        <React.Fragment key={ind}>
+                          <span
+                            style={{
+                              backgroundPosition: `${
+                                arr[ind]["sheet_x"] * -66 - 1
+                              }px ${arr[ind]["sheet_y"] * -66 - 1}px`,
+                            }}
+                            onClick={() => handleEmojiClick(arr[ind])}
+                            className="emoji-element"
+                          ></span>
+                        </React.Fragment>
+                      );
+                    })
+                  ) : (
+                    <span className="category">Not found</span>
+                  )}
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

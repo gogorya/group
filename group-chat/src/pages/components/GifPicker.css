@@ -8,12 +8,13 @@
 .gif-nav {
   display: flex;
   padding: 10px;
-  background-color: var(--light-grey);
+  background-color: var(--lighter-grey);
+  border: 2px solid var(--light-grey);
 }
 
 .gif-nav button {
   flex-grow: 1;
-  background-color: var(--light-grey);
+  background-color: var(--lighter-grey);
 }
 
 .gif-box input {
@@ -23,6 +24,7 @@
   border-radius: 25px;
   width: 70%;
   background-color: var(--lighter-grey);
+  border: 2px solid var(--buttons);
   color: var(--text);
   font-size: 1em;
   margin: 0 4%;

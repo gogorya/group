@@ -1,8 +1,8 @@
 import { React, useEffect, useState, useRef } from "react";
-import { IoSendSharp } from "react-icons/io5";
 import {
-  MdOutlineEmojiEmotions,
-  MdOutlineArrowDownward,
+  MdSend,
+  MdEmojiEmotions,
+  MdArrowDownward,
   MdOutlineClose,
 } from "react-icons/md";
 
@@ -56,9 +56,9 @@ export default function InputSection({
     handleInputSubmit(e);
   };
 
-  useEffect(() => {
-    input.current.focus();
-  }, []);
+  // useEffect(() => {
+  // input.current.focus();
+  // }, []);
 
   return (
     <form className="input-form" onSubmit={(e) => onFormSubmit(e)}>
@@ -72,9 +72,9 @@ export default function InputSection({
         >
           <span>
             {showEmojiPickerContainer ? (
-              <MdOutlineArrowDownward />
+              <MdArrowDownward />
             ) : (
-              <MdOutlineEmojiEmotions />
+              <MdEmojiEmotions />
             )}
           </span>
         </button>
@@ -91,7 +91,7 @@ export default function InputSection({
           disabled={chatText === "" && selectedGif === ""}
         >
           <span>
-            <IoSendSharp />
+            <MdSend />
           </span>
         </button>
       </div>
@@ -113,11 +113,7 @@ export default function InputSection({
             />
           </div>
           {!emojiGif && showEmojiPickerContainer && (
-            <GifPicker
-              onGifClick={handleGifClick}
-              emojiGif={emojiGif}
-              toggleTray={toggleTray}
-            />
+            <GifPicker onGifClick={handleGifClick} toggleTray={toggleTray} />
           )}
         </div>
       </div>
@@ -129,7 +125,9 @@ export default function InputSection({
               setSelectedGif("");
             }}
           >
-            <img src={selectedGif} alt=""></img>
+            <div className="img-shadow">
+              <img src={selectedGif.replace("d/", "M/")} alt=""></img>
+            </div>
             <button className="input-buttons" type="button">
               <span>
                 <MdOutlineClose />
