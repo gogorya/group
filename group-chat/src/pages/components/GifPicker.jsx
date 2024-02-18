@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { HiOutlineGif } from "react-icons/hi2";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import "./GifPicker.css";
 
