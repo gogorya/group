@@ -28,7 +28,8 @@ export default function GifPicker({ onGifClick, toggleTray }) {
   };
 
   const fetchGifs = () => {
-    var apikey = "AIzaSyAEAw4HtOwdgX2ytsEDnfaj_WlJS0sksd0";
+    // Replace apikey value with key (string) for local development
+    var apikey = process.env.TENOR_KEY;
     var clientkey = "my_test_app";
     var lmt = 30;
     var media = "nanogif, mediumgif";

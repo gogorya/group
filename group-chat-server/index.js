@@ -34,7 +34,10 @@ app.use(
 
 app.use(express.json());
 
-if (process.env.NODE_ENV === "production") {
+if (
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "production_local"
+) {
   app.use(express.static(path.join(__dirname, "build")));
   app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -52,7 +55,9 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("/api", routes);
 
-const server = app.listen(process.env.PORT || 8080, (error) => {
+const PORT = parseInt(process.env.PORT) || 8080;
+
+const server = app.listen(PORT, (error) => {
   if (!error) {
     console.log("Server running at: ", process.env.PORT);
   } else {
@@ -80,7 +85,8 @@ db.on("error", (error) => {
 // shift this to messageDataController? - didn't work
 const io = new Server(
   server,
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "production_local"
     ? {}
     : {
         cors: {

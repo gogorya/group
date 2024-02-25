@@ -2,7 +2,7 @@
 // export const host = String("http://" + window.location.host);
 export const host =
   process.env.NODE_ENV === "production"
-    ? String("http://" + window.location.host)
+    ? String("https://" + window.location.host)
     : String("http://" + window.location.host).replace("3000", "8080");
 
 console.log("!host: ", host);
