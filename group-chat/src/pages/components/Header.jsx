@@ -20,7 +20,7 @@ export default function Header({ isDark, setIsDark }) {
     setIsDark(!isDark);
   };
 
-  const handleLogoutfunc = async () => {
+  const handleLogoutfunc = () => {
     handleLogout()
       .then((data) => {
         // console.log(data);

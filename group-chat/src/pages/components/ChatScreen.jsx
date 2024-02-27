@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket";
 import InputSection from "./InputSection";
 import { postUserInfo, Authentication, handleLogout } from "../../auth";
-import { getMessage } from "../apiRoutes";
-import { postMessage } from "../apiRoutes";
+import { postMessage, getMessage } from "../apiRoutes";
 import "./ChatScreen.css";
 
 export default function ChatScreen() {
@@ -20,16 +19,20 @@ export default function ChatScreen() {
   const currUser = localStorage.getItem("username");
 
   useEffect(() => {
-    Authentication().then((data) => {
-      if (!data.isLog) {
-        handleLogout().catch((error) => {
-          console.log(error);
-        });
-        navigate("/login");
-      } else {
-        localStorage.setItem("username", data.username);
-      }
-    });
+    Authentication()
+      .then((data) => {
+        if (!data.isLog) {
+          handleLogout().catch((error) => {
+            console.log(error);
+          });
+          navigate("/login");
+        } else {
+          localStorage.setItem("username", data.username);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [messages, selectedGif, arrivalmessage, navigate]);
 
   const handleInputSubmit = (e) => {
@@ -49,9 +52,13 @@ export default function ChatScreen() {
     msg.push(hold);
     setMessages((prev) => [...prev, hold]);
 
-    postUserInfo(postMessage, { chatText, selectedGif }).then((data) => {
-      // console.log(data);
-    });
+    postUserInfo(postMessage, { chatText, selectedGif })
+      .then((data) => {
+        // console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     socket.emit("sendMessage", {
       username: currUser,
@@ -121,13 +128,16 @@ export default function ChatScreen() {
   }, [messages]);
 
   useEffect(() => {
-    (async () => {
-      const data = await postUserInfo(getMessage, {});
-      for (let i = 0; i < data.messagePackage.length; i++) {
-        modifyTime(data.messagePackage[i]);
-      }
-      setMessages(data.messagePackage);
-    })();
+    postUserInfo(getMessage)
+      .then((data) => {
+        for (let i = 0; i < data.messagePackage.length; i++) {
+          modifyTime(data.messagePackage[i]);
+        }
+        setMessages(data.messagePackage);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   useEffect(() => {

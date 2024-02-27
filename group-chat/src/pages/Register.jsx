@@ -23,14 +23,18 @@ export default function Landing() {
       password: userDetails.password,
       confirmPassword: userDetails.confirmPassword,
     };
-    postUserInfo(registerRoute, data).then((data) => {
-      if (data.isLog) {
-        localStorage.setItem("username", userDetails.username);
-        navigate("/chat");
-      } else {
-        setRegStatus(data.regStat);
-      }
-    });
+    postUserInfo(registerRoute, data)
+      .then((data) => {
+        if (data.isLog) {
+          localStorage.setItem("username", userDetails.username);
+          navigate("/chat");
+        } else {
+          setRegStatus(data.regStat);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleUsernameChange = (e) => {

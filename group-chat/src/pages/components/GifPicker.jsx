@@ -3,6 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import "./GifPicker.css";
 
+import { fetchGif } from "../apiRoutes";
+import { postUserInfo } from "../../auth";
+
 export default function GifPicker({ onGifClick, toggleTray }) {
   const mediumGif = useRef(new Map());
   const searchMediumGif = useRef(new Map());
@@ -10,13 +13,22 @@ export default function GifPicker({ onGifClick, toggleTray }) {
   const next = useRef("");
   const searchNext = useRef("");
   const searchGifText = useRef("");
-  const loadMore = useRef(false);
+  const timer = useRef();
 
   const [gifs, setGifs] = useState([]);
   const [searchGifs, setSearchGifs] = useState([]);
 
   const handleSearchGifTextState = (e) => {
     searchGifText.current = e.target.value;
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      setSearchGifs([]);
+      searchMediumGif.current.clear();
+      if (e.target.value !== "") {
+        fetchGifs();
+        // console.log(e.target.value);
+      }
+    }, 700);
   };
 
   const handleGifClick = (e) => {
@@ -28,105 +40,28 @@ export default function GifPicker({ onGifClick, toggleTray }) {
   };
 
   const fetchGifs = () => {
-    // Replace apikey value with key (string) for local development
-    var apikey = process.env.TENOR_KEY;
-    var clientkey = "my_test_app";
-    var lmt = 30;
-    var media = "nanogif, mediumgif";
-    var featured_url =
-      "https://tenor.googleapis.com/v2/featured?key=" +
-      apikey +
-      "&client_key=" +
-      clientkey +
-      "&limit=" +
-      lmt +
-      "&pos=" +
-      next.current +
-      "&media_filter=" +
-      media;
-
-    // console.log(featured_url);
-
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.onreadystatechange = function () {
-      if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-        var response_objects = JSON.parse(xmlHttp.responseText);
-        let top_10_gifs = response_objects["results"];
-        let urls = [];
-        let next_value = "";
-        let url, dim;
-        for (let i = 0; i < top_10_gifs.length; i++) {
-          if (top_10_gifs[i]["media_formats"]["nanogif"]["dims"][1] > 90) {
-            continue;
+    postUserInfo(fetchGif, {
+      next: searchGifText.current === "" ? next.current : searchNext.current,
+      searchGifText: searchGifText.current,
+    })
+      .then((data) => {
+        if (searchGifText.current === "") {
+          setGifs((prev) => [...prev, ...data.urls]);
+          next.current = data.next_value;
+          for (let i = 0; i < data.urls.length; i++) {
+            mediumGif.current.set(data.urls[i].url, data.urls[i].url_med);
           }
-          url = top_10_gifs[i]["media_formats"]["nanogif"]["url"];
-          dim = top_10_gifs[i]["media_formats"]["nanogif"]["dims"];
-          urls.push({ url, dim });
-          mediumGif.current.set(
-            top_10_gifs[i]["media_formats"]["nanogif"]["url"],
-            top_10_gifs[i]["media_formats"]["mediumgif"]["url"]
-          );
-        }
-
-        next_value = response_objects["next"];
-        setGifs((prev) => [...prev, ...urls]);
-        next.current = next_value;
-      }
-    };
-    xmlHttp.open("GET", featured_url, true);
-    xmlHttp.send(null);
-  };
-
-  const searchFetchGifs = () => {
-    var apikey = "AIzaSyAEAw4HtOwdgX2ytsEDnfaj_WlJS0sksd0";
-    var clientkey = "my_test_app";
-    var lmt = 30;
-    var media = "nanogif, mediumgif";
-    var search_url =
-      "https://tenor.googleapis.com/v2/search?q=" +
-      searchGifText.current +
-      "&key=" +
-      apikey +
-      "&client_key=" +
-      clientkey +
-      "&limit=" +
-      lmt +
-      "&pos=" +
-      searchNext.current +
-      "&media_filter=" +
-      media;
-
-    // console.log(search_url);
-
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.onreadystatechange = function () {
-      if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-        var response_objects = JSON.parse(xmlHttp.responseText);
-        let top_10_gifs = response_objects["results"];
-        let urls = [];
-        let next_value = "";
-        let url, dim;
-        for (let i = 0; i < top_10_gifs.length; i++) {
-          if (top_10_gifs[i]["media_formats"]["nanogif"]["dims"][1] > 90) {
-            continue;
+        } else {
+          setSearchGifs((prev) => [...prev, ...data.urls]);
+          searchNext.current = data.next_value;
+          for (let i = 0; i < data.urls.length; i++) {
+            searchMediumGif.current.set(data.urls[i].url, data.urls[i].url_med);
           }
-          url = top_10_gifs[i]["media_formats"]["nanogif"]["url"];
-          dim = top_10_gifs[i]["media_formats"]["nanogif"]["dims"];
-          urls.push({ url, dim });
-          searchMediumGif.current.set(
-            top_10_gifs[i]["media_formats"]["nanogif"]["url"],
-            top_10_gifs[i]["media_formats"]["mediumgif"]["url"]
-          );
         }
-        next_value = response_objects["next"];
-        setSearchGifs((prev) => [...prev, ...urls]);
-        searchNext.current = next_value;
-      }
-    };
-    xmlHttp.open("GET", search_url, true);
-    xmlHttp.send(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -139,13 +74,8 @@ export default function GifPicker({ onGifClick, toggleTray }) {
     };
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        if (loadMore.current) {
-          searchFetchGifs(true);
-          // console.log("inside search observer", searchGifText.current.length);
-        }
-        if (searchGifText.current.length === 0) {
+        if (searchGifText.current === "" || searchMediumGif.current.size > 10) {
           fetchGifs();
-          // console.log("inside featured observer", searchGifText.current.length);
         }
       }
     }, options);
@@ -153,28 +83,6 @@ export default function GifPicker({ onGifClick, toggleTray }) {
 
     return () => {
       observer.unobserve(targetElement);
-    };
-  }, []);
-
-  useEffect(() => {
-    let timer;
-    const tenorInput = document.getElementById("tenorInput");
-    tenorInput.addEventListener("keyup", (e) => {
-      loadMore.current = false;
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        setSearchGifs([]);
-        searchMediumGif.current.clear();
-        if (e.target.value !== "") {
-          searchFetchGifs();
-          console.log(e.target.value);
-          loadMore.current = true;
-        }
-      }, 500);
-    });
-
-    return () => {
-      tenorInput.removeEventListener("keyup", () => {});
     };
   }, []);
 

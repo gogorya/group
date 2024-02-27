@@ -10,12 +10,16 @@ export default function Auth({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    Authentication().then((data) => {
-      setIsLoaded(true);
-      if (!data.isLog) {
-        navigate("/login");
-      }
-    });
+    Authentication()
+      .then((data) => {
+        setIsLoaded(true);
+        if (!data.isLog) {
+          navigate("/login");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [navigate]);
   return isLoaded ? (
     children

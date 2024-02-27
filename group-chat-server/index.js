@@ -34,10 +34,7 @@ app.use(
 
 app.use(express.json());
 
-if (
-  process.env.NODE_ENV === "production" ||
-  process.env.NODE_ENV === "production_local"
-) {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "build")));
   app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -85,8 +82,7 @@ db.on("error", (error) => {
 // shift this to messageDataController? - didn't work
 const io = new Server(
   server,
-  process.env.NODE_ENV === "production" ||
-  process.env.NODE_ENV === "production_local"
+  process.env.NODE_ENV === "production"
     ? {}
     : {
         cors: {

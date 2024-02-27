@@ -13,3 +13,4 @@ export const checkAuth = `${host}/api/checkAuth`;
 export const postMessage = `${host}/api/postMessage`;
 export const getMessage = `${host}/api/getMessage`;
 export const logout = `${host}/api/logout`;
+export const fetchGif = `${host}/api/fetchGif`;
