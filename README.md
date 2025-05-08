@@ -40,7 +40,7 @@ A group chat application with user authentication, session management, user them
 
 3. Create a `.env` file in **/group-chat-server** with the following keys:
 
-   ```
+   ```env
    PORT=8080
    DATABASE_URL=mongodb://localhost:27017/your-db-name
    SESSION_KEY=your-session-key
